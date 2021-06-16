@@ -2,16 +2,11 @@ using System;
 using static System.Console;
 
 class Program {
-    static void Main(string[] args) {  
-      //args = new string[] {"-s", "dfs", "bitmap.png", "bitmap_solved.png"};   
-      if (args.Length == 0) return;
-
-      // -g w h output.png
-      // -s algorithm input.png output.png 
+    static void Main(string[] args) {          
       Maze maze = null;
       Solver solver = null;
       string out_filename = "";
-      for (int i = 0 ; i < args.Length ; ++i)
+      for (int i = 0 ; i < args.Length ; ++i) 
           switch (args[i]) {
               case "-g":
                   int width = int.Parse(args[i+1]), height = int.Parse(args[i+2]);
@@ -20,20 +15,24 @@ class Program {
                   i += 3;
                   break;
               case "-s":
+                  Solver.Profile choice = args[i+1] == "dfs" ? Solver.Profile.DFS : args[i+1] == "bfs" ? Solver.Profile.BFS : Solver.Profile.Unknown;
                   maze = new Maze(args[i+2]);
-                  var choice = args[i+1] == "dfs" ? Solver.Profile.DFS : Solver.Profile.BFS;
                   solver = new Solver(maze, choice);
                   out_filename = args[i+3];
                   i += 3;
                   break;
               default:
-                  WriteLine("unknown option: " + args[i]);
-                  WriteLine("usage: program [-g <w> <h> <output_filename>.png] [-s dfs/bfs <input_filename>.png <output_filename>.png]");
-                  return;
+                  WriteLine("ignored the option: " + args[i]);                  
+                  break;
           } 
 
-      Canvas canvas = new Canvas(maze);
-      canvas.draw_the_maze(solver);
-      canvas.save_image(out_filename);
+      if (maze is Maze) {
+        Canvas canvas = new Canvas(maze);
+        canvas.draw_the_maze(solver);
+        canvas.save_image(out_filename);
+        return;
+      }
+      
+      WriteLine("usage: program [-g <w> <h> <output_filename>.png] [-s dfs/bfs <input_filename>.png <output_filename>.png]");          
     }    
 }
