@@ -5,17 +5,18 @@ class Solver {
     //choose solver algorithm
     //get solution from solver algorithm
 
-    public enum Profile {DFS, BFS};
+    public enum Profile {DFS, BFS, Unknown};
     public (int x, int y)[] result;
 
     public Solver(Maze maze, Profile choice) {
         result = choice switch {
-            Profile.DFS => DepthFirstSearch(maze),
-            Profile.BFS => BreadthFirstSearch(maze)
+            Profile.DFS => depth_first_search(maze),
+            Profile.BFS => breadth_first_search(maze),
+            _ => throw new Exception("Please choose from either dfs or bfs")
         };
     }
 
-    (int x, int y)[] DepthFirstSearch(Maze maze) {
+    (int x, int y)[] depth_first_search(Maze maze) {
 
         var start = maze.start;
         var end = maze.end;
@@ -47,7 +48,7 @@ class Solver {
         return path;
     }
 
-    (int x, int y)[] BreadthFirstSearch(Maze maze) {
+    (int x, int y)[] breadth_first_search(Maze maze) {
         
         var start = maze.start;
         var end = maze.end;
