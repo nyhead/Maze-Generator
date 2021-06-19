@@ -10,24 +10,27 @@ class Maze {
     public (int x, int y) start;
     public (int x, int y) end;
 
-    public int[,] grid;
+    public bool[,] grid;
 
+    // 0 true is_path
+    // 1 false 
     public Maze (string filename) {
         Bitmap bp = new Bitmap(filename);
         cols = bp.Width;
         rows = bp.Height;     
 
-        grid = new int[cols, rows];
+        grid = new bool[cols, rows];
+
 
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
                 var color = bp.GetPixel(x,y);
-                int color_name = (color.R, color.G, color.B) == (0,0,0) ? 1 : 0;
+                bool is_path = (color.R, color.G, color.B) == (0,0,0) ? false : true;
 
-                if (y == 0 && color_name == 0 ) start = (x,y);
-                else if ((y == rows-1 && color_name == 0 )) end = (x,y);
+                if (y == 0 && is_path ) start = (x,y);
+                else if ((y == rows-1 && is_path )) end = (x,y);
 
-                grid[x,y] = color_name;                
+                grid[x,y] = is_path;                
             }            
         }
         maze_solving = true;
@@ -44,22 +47,15 @@ class Maze {
         end = end.x % 2 == 0 ? (end.x-1,rows-1) : (end.x, rows-1);
         //end = (cols-2,rows-1);
 
-        grid = new int[cols, rows];
-
-
-        for (int y = 0; y < rows; y++) {
-            for (int x = 0; x < cols; x++) {
-            grid[x,y] = 1;
-            }
-        }
+        grid = new bool[cols, rows];
 
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
-            (int x, int y) = (i + i + 1, j + j + 1);              
-            grid[x,y] = 0;
+                (int x, int y) = (i + i + 1, j + j + 1);              
+                grid[x,y] = true;
             }
         }    
-        grid[start.x, start.y] = 0;
+        grid[start.x, start.y] = true;
 
         generate_maze();
     }
@@ -100,7 +96,7 @@ class Maze {
             (-1,  0)
         };   
 
-        bool valid (int x, int y, int width, int height) => y >= 0 && y < height && x >= 0 && x < width && grid[x,y] != 1;
+        bool valid (int x, int y, int width, int height) => y >= 0 && y < height && x >= 0 && x < width && grid[x,y];
         foreach ((int x, int y) in moves) {
             (int dx, int dy) = maze_solving ? (x, y) : (x*2, y*2);
             (int i, int j) = (cell.x+dx, cell.y+dy);
@@ -126,7 +122,7 @@ class Maze {
 
         (int dx, int dy) = ((x1-x) / 2, (y2 - y)  / 2);
         
-        grid[a.x+dx,a.y+dy] = 0;      
+        grid[a.x+dx,a.y+dy] = true;      
     }
 
 

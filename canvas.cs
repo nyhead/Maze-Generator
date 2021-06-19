@@ -19,7 +19,7 @@ class Canvas {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                (int r, int g, int b) color = grid[x,y] == 1 ? (0,0,0) : (255,255,255);
+                (int r, int g, int b) color = !grid[x,y] ? (0,0,0) : (255,255,255);
                 ctx.SetSourceRGB(color.r, color.g, color.b);
                 ctx.Rectangle(x,y,1,1);
                 ctx.Fill();
