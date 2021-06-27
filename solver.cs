@@ -27,12 +27,11 @@ class Solver {
         bool[,] visited = new bool[width , height];
 
         stack.Push(start);
+        
         while (stack.Count > 0) {
             var curr = stack.Pop();
 
-            if (curr == end) {
-                break;
-            }
+            if (curr == end) break;
 
             visited[curr.x, curr.y] = true;
 
