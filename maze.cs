@@ -45,7 +45,6 @@ class Maze {
 
         end = (new Random().Next(1,rows-1),0);
         end = end.x % 2 == 0 ? (end.x-1,rows-1) : (end.x, rows-1);
-        //end = (cols-2,rows-1);
 
         grid = new bool[cols, rows];
 
@@ -56,6 +55,7 @@ class Maze {
             }
         }    
         grid[start.x, start.y] = true;
+        grid[end.x, end.y] = true;
 
         generate_maze();
     }
@@ -64,13 +64,14 @@ class Maze {
         Stack<(int x, int y)> s = new Stack<(int x, int y)>();
 
         bool[,] visited = new bool[cols,rows];
+
         visited[start.x,start.y] = true;
 
         s.Push((start.x,start.y+1));
         visited[start.x,start.y+1] = true;
 
         while (s.Count > 0) {
-            (int x, int y) current = s.Pop();
+            (int x, int y) current = s.Pop();            
 
             List<(int x, int y)> neighbors = get_adjacent(current, visited);
 
@@ -109,14 +110,7 @@ class Maze {
         return adjacent_cells;
     }
 
-    void connect((int x, int y) a, (int x, int y) b){
-        var moves = new (int x, int y) [] {
-            (-1,  0), // top
-            ( 0, -1), // right
-            ( 1,  0), // bottom
-            ( 0,  1), // left
-        };       
-      
+    void connect((int x, int y) a, (int x, int y) b){     
         (int x, int y) = (a.x, a.y);
         (int x1, int y2) = (b.x, b.y);
 
