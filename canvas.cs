@@ -26,11 +26,6 @@ class Canvas {
             }
         }
 
-        ctx.SetSourceRGB(255,255,255);
-        //ctx.Rectangle(maze.start.x,maze.start.y,1,1);
-        ctx.Rectangle(maze.end.x,maze.end.y,1,1);
-        ctx.Fill();
-
         if (solver is Solver) {
             var end = maze.end;
             var result = solver.result;
